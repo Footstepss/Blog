@@ -182,7 +182,7 @@ class first_categoryView(View):
 
         pagenum = 1
         try:
-            page = paginator.page(pagenum)
+            page = paginator.page(1)
         except PageNotAnInteger:
             page = paginator.page(1)
         except EmptyPage:
@@ -199,7 +199,7 @@ class first_categoryView(View):
             else:
                 page_range = range(pagenum - 2, pagenum + 4)
 
-        return render(request, 'index.html', context={'post_list': post_list, 'range': page_range, 'maxnum': maxnum, 'paginator': paginator,'current_page': page,'pagenum':pagenum})
+        return render(request, 'index.html', context={'post_list': post_list, 'range': page_range, 'maxnum': maxnum, 'paginator': paginator,'current_page': page,'pagenum':1})
 
 class commentView(View):
     def post(self,request,post_pk):
@@ -385,7 +385,7 @@ class first_single_categoryView(View):
             else:
                 page_range = range(pagenum - 2, pagenum + 4)
 
-        return render(request, 'single.html', context={'post_list': post_list, 'range': page_range, 'maxnum': maxnum, 'paginator': paginator,'current_page': page,'pagenum':pagenum})
+        return render(request, 'single.html', context={'post_list': post_list, 'range': page_range, 'maxnum': maxnum, 'paginator': paginator,'current_page': page,'pagenum':1})
 
 class single_tagView(View):
     def get(self,request,pk,pagenum):
@@ -442,14 +442,14 @@ class first_single_tagView(View):
 
         return render(request, 'single.html', context={'post_list': post_list, 'range': page_range, 'maxnum': maxnum, 'paginator': paginator,'current_page': page,'pagenum':pagenum})
 
+
 def search(request):
     q = request.GET.get('q')
     error_msg = ''
 
     if not q:
         error_msg = "请输入关键词"
-        return render(request, 'blog/index.html', {'error_msg': error_msg})
+        return render(request, 'index.html', {'error_msg': error_msg})
 
     post_list = Posts.objects.filter(Q(title__icontains=q) | Q(body__icontains=q))
-    return render(request, 'blog/index.html', {'error_msg': error_msg,
-                                               'post_list': post_list,'pagenum':1})
+    return render(request, 'index.html', {'error_msg': error_msg,'post_list': post_list,'pagenum':1})
